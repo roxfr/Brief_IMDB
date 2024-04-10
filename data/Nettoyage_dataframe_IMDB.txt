@@ -1,29 +1,29 @@
  0   color                   5024 non-null   object ; A SUPPRIMER
- 1   director_name           4939 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
+ 1   director_name           4939 non-null   object ; A GARDER ET A FACTORISER
  2   num_critic_for_reviews  4993 non-null   float64 ; A GARDER
- 3   duration                5028 non-null   float64 ; A GARDER
- 4   director_fb_likes       4939 non-null   float64 ; A GARDER
+ 3   duration                5028 non-null   float64 ; A SUPPRIMER
+ 4   director_fb_likes       4939 non-null   float64 ; A SUPPRIMER
  5   actor_3_fb_likes        5020 non-null   float64 ; A SUPPRIMER
- 6   actor_2_name            5030 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
+ 6   actor_2_name            5030 non-null   object ; A GARDER ET A FACTORISER
  7   actor_1_fb_likes        5036 non-null   float64 ; A GARDER
  8   gross                   4366 non-null   float64 ; A GARDER
- 9   genres                  5043 non-null   object ; A DECOUPER
- 10  actor_1_name            5036 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
+ 9   genres                  5043 non-null   object ; A GARDER ET A FACTORISER
+ 10  actor_1_name            5036 non-null   object ; A GARDER ET A FACTORISER
  11  movie_title             5043 non-null   object ; A GARDER
  12  num_voted_users         5043 non-null   int64 ; A GARDER
  13  cast_total_fb_likes     5043 non-null   int64 ; A GARDER
  14  actor_3_name            5020 non-null   object ; A SUPPRIMER
  15  facenumber_in_poster    5030 non-null   float64 ; A SUPPRIMER
- 16  plot_keywords           4890 non-null   object ; A DECOUPER
+ 16  plot_keywords           4890 non-null   object ; A SUPPRIMER
  17  movie_imdb_link         5043 non-null   object ; A SUPPRIMER
  18  num_user_for_reviews    5022 non-null   float64 ; A GARDER
- 19  language                5029 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
- 20  country                 5038 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
+ 19  language                5029 non-null   object ; A GARDER ET A FACTORISER
+ 20  country                 5038 non-null   object ; A GARDER ET A FACTORISER
  21  content_rating          4740 non-null   object ; A SUPPRIMER
- 22  budget                  4637 non-null   float64 ; A GARDER
- 23  title_year              4935 non-null   float64 ; A GARDER
+ 22  budget                  4637 non-null   float64 ; A SUPPRIMER
+ 23  title_year              4935 non-null   float64 ; A SUPPRIMER
  24  actor_2_fb_likes        5030 non-null   float64 ; A GARDER
- 25  imdb_score              5043 non-null   float64 ; A GARDER
+ 25  imdb_score              5043 non-null   float64 ; VARIABLE CIBLE ET A GARDER
  26  aspect_ratio            4714 non-null   float64 ; A SUPPRIMER
  27  movie_fb_likes          5043 non-null   int64 ; A GARDER
  
