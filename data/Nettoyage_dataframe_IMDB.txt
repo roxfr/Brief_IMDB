@@ -3,7 +3,7 @@
  2   num_critic_for_reviews  4993 non-null   float64 ; A GARDER
  3   duration                5028 non-null   float64 ; A GARDER
  4   director_fb_likes       4939 non-null   float64 ; A GARDER
- 5   actor_3_fb_likes        5020 non-null   float64 ; A GARDER
+ 5   actor_3_fb_likes        5020 non-null   float64 ; A SUPPRIMER
  6   actor_2_name            5030 non-null   object ; A GARDER ET A TRANSFORMER EN NUMERIQUE
  7   actor_1_fb_likes        5036 non-null   float64 ; A GARDER
  8   gross                   4366 non-null   float64 ; A GARDER
@@ -26,6 +26,4 @@
  25  imdb_score              5043 non-null   float64 ; A GARDER
  26  aspect_ratio            4714 non-null   float64 ; A SUPPRIMER
  27  movie_fb_likes          5043 non-null   int64 ; A GARDER
-
-
-
+ 
