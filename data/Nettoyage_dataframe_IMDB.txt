@@ -17,8 +17,8 @@
  16  plot_keywords           4890 non-null   object ; A SUPPRIMER
  17  movie_imdb_link         5043 non-null   object ; A SUPPRIMER
  18  num_user_for_reviews    5022 non-null   float64 ; A GARDER
- 19  language                5029 non-null   object ; A GARDER ET A FACTORISER
- 20  country                 5038 non-null   object ; A GARDER ET A FACTORISER
+ 19  language                5029 non-null   object ; A SUPPRIMER
+ 20  country                 5038 non-null   object ; A SUPPRIMER
  21  content_rating          4740 non-null   object ; A SUPPRIMER
  22  budget                  4637 non-null   float64 ; A SUPPRIMER
  23  title_year              4935 non-null   float64 ; A SUPPRIMER
