@@ -21,7 +21,7 @@ model = None
 
 def predict_linear_regression(title):
     # Chargement du modèle de régression linéaire à partir du fichier
-    model_file = 'data/modele_linear_regression.pkl'
+    model_file = 'data/model_linear_regression.pkl'
     model = joblib.load(model_file)
 
     # Extraction des données du film à partir du DataFrame en fonction du titre
@@ -50,7 +50,7 @@ def predict_linear_regression(title):
 
 
 def predict_random_forest(title):
-    model_file = 'data/modele_random_forest.pkl'
+    model_file = 'data/model_random_forest.pkl'
     model = joblib.load(model_file)
 
     film_data = data[data['movie_title'] == title]
