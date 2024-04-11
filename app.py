@@ -73,43 +73,57 @@ def predict_random_forest(title):
 def home():
     return render_template('home.html')
 
+@app.route('/search', methods=['GET'])
+def search():
+    term = request.args.get('term', '').strip().lower().replace(' ', '_')
+    if term:
+        # Filtrer les titres de films insensibles à la casse
+        filtered_titles = [title for title in data['movie_title'] if term in title.lower()]
+        #print("Titres filtrés : ", filtered_titles)
+        # Créer la liste des résultats
+        results = [{'id': title, 'text': title.replace('_', ' ')} for title in filtered_titles[:15]]
+        return jsonify({'results': results})
+    else:
+        return jsonify({'results': []})
+
 @app.route('/predict', methods=['GET'])
 def predict():
     # Récupération du titre et du type de modèle à partir des paramètres de la requête GET
     title = request.args.get('title')  # Titre du film à prédire
     model_type = request.args.get('model')  # Type de modèle à utiliser
     
-    # Formatage du titre
-    # Mettre en minuscule
-    # Suppression des espaces vides en début/fin
-    # Remplacement des espaces vides par des underscores
-    title_without_space = title.lower().strip().replace(' ', '_')
+    # Formatage
+    # Minuscule + Suppr. espaces en début/fin + Rempl. espaces par underscores
+    title_with_underscore = title.lower().strip().replace(' ', '_')
+    # Minuscule + Suppr. espaces en début/fin + Rempl. underscores par espaces
+    title_with_space = title.lower().strip().replace('_', ' ')
+    model_type_with_space = model_type.lower().strip().replace('_', ' ')
     
     # Vérification si le titre du film est vide ou non spécifié
-    if not title_without_space:
+    if not title_with_underscore:
         return jsonify({'error': 'Veuillez spécifier un titre de film'}), 400
 
     # Vérification si le titre du film est présent dans les données
-    if title_without_space not in data['movie_title'].values:
+    if title_with_underscore not in data['movie_title'].values:
         # Si le titre n'est pas trouvé, renvoi une réponse JSON avec un message d'erreur
         return jsonify({'error': 'Film non trouvé dans les données'}), 404
 
     # Vérification du type de modèle et appel de la fonction de prédiction appropriée
     if model_type == 'linear_regression':
-        score_predict, score_source = predict_linear_regression(title_without_space)  # régression linéaire
+        score_predict, score_source = predict_linear_regression(title_with_underscore)  # régression linéaire
     elif model_type == 'random_forest':
-        score_predict, score_source = predict_random_forest(title_without_space)  # random forest
+        score_predict, score_source = predict_random_forest(title_with_underscore)  # random forest
     else:
         # Si le type de modèle n'est pas valide, renvoi une erreur 400
         return jsonify({'error': 'Modèle non valide'}), 400
 
     # Vérification du type de contenu de la requête et réponse appropriée
     if request.headers.get('Content-Type') == 'application/json':
-        # Si la demande accepte JSON, renvoi les scores prédits et originaux au format JSON
+        # Si la demande accepte JSON, renvoi les scores
         return jsonify({'score_predict': score_predict, 'score_source': score_source})
     else:
-        # Sinon, renvoi une page HTML affichant les scores prédits et originaux
-        return render_template('result.html', score_predict=score_predict, score_source=score_source)
+        # Sinon, renvoi une page HTML affichant les scores
+        return render_template('result.html', title=title_with_space, model_type=model_type_with_space, score_predict=score_predict, score_source=score_source)
 
 
 if __name__ == '__main__':

@@ -12,8 +12,10 @@
         {% if score_predict is none %}
         <p>{{ score_source['error'] }}</p>
         {% else %}
-            <p>Score prédit: {{ score_predict }}</p>
-            <p>Score source: {{ score_source }}</p>
+            <p>Titre du film : {{ title }}</p>
+            <p>Type de modèle : {{ model_type }}</p>
+            <p>Score prédit : {{ score_predict }}</p>
+            <p>Score source : {{ score_source }}</p>
         {% endif %}
         <a href="{{ url_for('home') }}" class="home-link">Retour à l'accueil</a>
     </div>

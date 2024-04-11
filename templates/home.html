@@ -1,24 +1,77 @@
-<!-- templates/home.html -->
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .container {
+            padding-top: 2rem;
+            max-width: 768px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Prédiction de score IMDB</h1>
-    <div class="search-container">
-        <form action="{{ url_for('predict') }}" method="GET">
-            <input type="text" id="movie-title" name="title" placeholder="Titre du film">
+    <div class="container">
+        <h1>Prédiction de score IMDB</h1>
+        <br>
+        <form id="prediction-form">
+            <select class="js-data-example-ajax form-control" id="movie-title" name="title" placeholder="Commencez à taper le titre du film..."></select>
+            <div id="search-results" class="search-suggestions"></div>
             <select id="model" name="model">
-                <option value="linear_regression">Linear regression</option>
-                <option value="random_forest">Random forest</option>
+                <option value="linear_regression">Régression linéaire</option>
+                <option value="random_forest">Random Forest</option>
             </select>
-            <button type="submit">OK</button>
+            <button type="submit" id="submit-btn">OK</button>
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-data-example-ajax').select2({
+                ajax: {
+                    url: '/search',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 3,
+                language: {
+                    searching: function() {
+                        return "Recherche en cours...";
+                    },
+                    noResults: function() {
+                        return "Aucun résultat trouvé";
+                    },
+                    inputTooShort: function() {
+                        return "Veuillez saisir au moins 3 caractères pour rechercher un film";
+                    }
+                }
+            });        
+            $('#submit-btn').click(function() {
+                // Récupérer les valeurs des éléments sélectionnés
+                var selectedMovie = $('#movie-title').val();
+                var selectedModel = $('#model').val();        
+                // Construire l'URL de redirection
+                var redirectUrl = '/predict?title=' + selectedMovie + '&model=' + selectedModel;        
+                // Rediriger vers la page
+                window.location.href = redirectUrl;
+            });        
+            // Empêcher le formulaire de se soumettre lorsqu'on appuie sur "Entrée"
+            $('#prediction-form').submit(function(event) {
+                event.preventDefault();
+            });
+        });        
+    </script>
 </body>
 </html>
