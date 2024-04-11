@@ -11,8 +11,10 @@ app = Flask(__name__)
 # CHARGEMENT DES DONNEES #
 ##########################
 
-data = pd.read_csv('data/5000_movies_cleaned.csv')
+global data
+global model
 
+data = pd.read_csv('data/5000_movies_cleaned.csv')
 model = None
 
 #############
@@ -25,15 +27,15 @@ def predict_linear_regression(title):
     model = joblib.load(model_file)
 
     # Extraction des données du film à partir du DataFrame en fonction du titre
-    film_data = data[data['movie_title'] == title]
+    movie_data = data[data['movie_title'] == title]
 
     # Vérification si les données du film sont vides
-    if film_data.empty:
+    if movie_data.empty:
         # Si les données sont vides, renvoi une erreur 404 avec un message JSON
         return jsonify({'error': 'Film non trouvé'}), 404
 
     # Extraction des caractéristiques du film en supprimant le score IMDb et le titre du film
-    features = film_data.drop(['imdb_score', 'movie_title'], axis=1).values
+    features = movie_data.drop(['imdb_score', 'movie_title'], axis=1).values
 
     # Standardisation des caractéristiques du film
     scaler = StandardScaler()  # Initialisation du StandardScaler
@@ -43,7 +45,7 @@ def predict_linear_regression(title):
     score_predict = model.predict(features_scaled)
 
     # Extraction du score IMDb réel du film
-    score_source = film_data['imdb_score'].values[0]
+    score_source = movie_data['imdb_score'].values[0]
 
     # Renvoi du score IMDb prédit et du score IMDb réel
     return score_predict[0], score_source
@@ -53,13 +55,13 @@ def predict_random_forest(title):
     model_file = 'data/model_random_forest.pkl'
     model = joblib.load(model_file)
 
-    film_data = data[data['movie_title'] == title]
-    if film_data.empty:
+    movie_data = data[data['movie_title'] == title]
+    if movie_data.empty:
         return jsonify({'error': 'Film non trouvé'}), 404
 
-    features = film_data.drop(['imdb_score', 'movie_title'], axis=1).values
+    features = movie_data.drop(['imdb_score', 'movie_title'], axis=1).values
     score_predict = model.predict(features)
-    score_source = film_data['imdb_score'].values[0]
+    score_source = movie_data['imdb_score'].values[0]
 
     return score_predict[0], score_source
 
@@ -76,12 +78,27 @@ def predict():
     # Récupération du titre et du type de modèle à partir des paramètres de la requête GET
     title = request.args.get('title')  # Titre du film à prédire
     model_type = request.args.get('model')  # Type de modèle à utiliser
+    
+    # Formatage du titre
+    # Mettre en minuscule
+    # Suppression des espaces vides en début/fin
+    # Remplacement des espaces vides par des underscores
+    title_without_space = title.lower().strip().replace(' ', '_')
+    
+    # Vérification si le titre du film est vide ou non spécifié
+    if not title_without_space:
+        return jsonify({'error': 'Veuillez spécifier un titre de film'}), 400
+
+    # Vérification si le titre du film est présent dans les données
+    if title_without_space not in data['movie_title'].values:
+        # Si le titre n'est pas trouvé, renvoi une réponse JSON avec un message d'erreur
+        return jsonify({'error': 'Film non trouvé dans les données'}), 404
 
     # Vérification du type de modèle et appel de la fonction de prédiction appropriée
     if model_type == 'linear_regression':
-        score_predict, score_source = predict_linear_regression(title)  # régression linéaire
+        score_predict, score_source = predict_linear_regression(title_without_space)  # régression linéaire
     elif model_type == 'random_forest':
-        score_predict, score_source = predict_random_forest(title)  # random forest
+        score_predict, score_source = predict_random_forest(title_without_space)  # random forest
     else:
         # Si le type de modèle n'est pas valide, renvoi une erreur 400
         return jsonify({'error': 'Modèle non valide'}), 400
