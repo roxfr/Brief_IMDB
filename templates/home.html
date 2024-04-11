@@ -1,0 +1,24 @@
+<!-- templates/home.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Prédiction de score IMDb</h1>
+    <div class="search-container">
+        <form action="{{ url_for('predict') }}" method="GET">
+            <input type="text" id="movie-title" name="title" placeholder="Titre du film">
+            <select id="model" name="model">
+                <option value="linear_regression">Linear regression</option>
+                <option value="random_forest">Random forest</option>
+            </select>
+            <button type="submit">OK</button>
+        </form>
+    </div>
+</body>
+</html>
